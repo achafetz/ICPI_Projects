@@ -14,8 +14,8 @@
 #identify all data element uids and category option combos possible
   mcad <- df_mer %>% 
     filter(indicator %in% c("HTS_TST", "HTS_TST_POS", "TX_CURR")) %>%
-    distinct(indicator, indicatortype, standardizeddisaggregate, dataelementuid, ismcad, categoryoptioncomboname, categoryoptioncombouid, age, sex, resultstatus, otherdisaggregate) %>% 
-    select(indicator, indicatortype, standardizeddisaggregate, dataelementuid,ismcad, categoryoptioncomboname, categoryoptioncombouid, age, sex, resultstatus, otherdisaggregate) %>%
+    distinct(indicator, indicatortype, standardizeddisaggregate, dataelementuid, ismcad, categoryoptioncomboname, categoryoptioncombouid, age, sex, resultstatus, modality, otherdisaggregate) %>% 
+    select(indicator, indicatortype, standardizeddisaggregate, dataelementuid,ismcad, categoryoptioncomboname, categoryoptioncombouid, age, sex, resultstatus, modality, otherdisaggregate) %>%
 #export file  
     write_tsv("Downloads/hts_tx_uids_catoptcombo.txt")
 
