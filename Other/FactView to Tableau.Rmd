@@ -1,0 +1,107 @@
+---
+title: "Getting Fact View quaters into Tableau"
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
+---
+
+```{r setup}
+pacman::p_load(tidyverse, stringr)
+```
+
+Working with quarters in Tableau can be challenging with the way the ICPI Fact View datasets are structured. We'll walk through restructuring the dataset to allow you to work with it more easily in Tableau
+
+
+## CREATE TEST DATA FRAME TO WORK WITH
+
+The Fact View dataset starts out in a semi wide form initially. Let's import it and subset it slightly to make it more manageable to work with.
+
+| psnu | indicator | fy2017q1 | fy2017q2 | fy2017q3 |
+|------|-----------|----------|----------|----------|
+| x    | y         | #        | #        | #        |
+
+```{r, warning=FALSE}
+
+df_factview <-
+  
+  #import data
+    read_tsv("~/ICPI/Data/ICPI_FactView_OU_IM_20170922_v2_1.txt") %>% #change this to wherever your OU x IM dataset is located.
+  
+  #rename all columns to lower case [persnal preference]
+    rename_all(tolower) %>% 
+  
+  #filter to smaller subset to work with
+    filter(indicator == "TX_NEW", disaggregate == "Total Numerator", operatingunit == "Rwanda") %>% 
+  
+  #limit variable columns we're working with 
+    select(operatingunit, mechanismid, indicator, contains("fy2")) 
+
+  #view dataset
+    head(df_factview)
+
+```
+
+## CLEAN UP
+
+To Tableau needs data in a long format (below) rather than wide (above). So, this means we'll need to melt it, or reshape it to a long format. Beore reshaping, we need to clean it up a bit first.
+
+
+```{r}
+
+df_clean <- df_factview %>%
+  
+  #remove APR and TARGETS from the dataset since they are not quarterly data
+    select(-contains("apr"), -contains("targets")) %>%
+  
+  #remove the fy from the start of the value column names to make it easier to work with when we convert from string to a date
+    rename_at(vars(contains("fy2")), funs(str_replace(.,"fy", "") ))
+  
+  #view dataset
+    head(df_clean)
+```
+
+
+## MELT
+
+Now that the data is cleaned up a bit, let's reshape it.
+
+| psnu | indicator | period   | value |
+|------|-----------|----------|-------|
+| x    | y         | fy2017q1 | #     |
+| x    | y         | fy2017q2 | #     |
+| x    | y         | fy2017q3 | #     |
+
+```{r}
+ 
+df_long <- df_clean %>% 
+  
+  #melt dataset
+    gather(pd, val, starts_with("2"), na.rm = TRUE)
+
+  #view dataset
+    head(df_long)
+
+```
+
+## CONVERT QUATER TO DATE 
+
+The other issue is that PEPFAR deals in fiscal quarter not calendar quarters. So, FY2017Q1 is starts Oct 2016, not Jan 2017. It's easier to work with dates. 
+
+| psnu | indicator | period   | date       | value |
+|------|-----------|----------|------------|-------|
+| x    | y         | fy2017q1 | 2016-10-01 | #     |
+| x    | y         | fy2017q2 | 2017-01-01 | #     |
+| x    | y         | fy2017q3 | 2017-04-01 | #     |
+
+```{r}
+df_long_date <- df_long %>% 
+  
+  #add date
+    mutate(date = yq(pd)  %m-% months(3)) %>% #to change from fiscal quarter to date, need to subtract 3 mo
+  
+  #reorder
+    select(operatingunit, mechanismid, indicator, pd, date, val)
+
+head(df_long_date)
+```
