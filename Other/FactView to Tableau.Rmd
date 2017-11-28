@@ -1,13 +1,11 @@
 ---
 title: "Getting Fact View quaters into Tableau"
-output:
-  html_document: default
-  html_notebook: default
-  pdf_document: default
+output: github_document
 ---
 
 ```{r setup}
-pacman::p_load(tidyverse, stringr)
+pacman::p_load(tidyverse, lubridate)
+
 ```
 
 Working with quarters in Tableau can be challenging with the way the ICPI Fact View datasets are structured. We'll walk through restructuring the dataset to allow you to work with it more easily in Tableau
@@ -21,13 +19,13 @@ The Fact View dataset starts out in a semi wide form initially. Let's import it 
 |------|-----------|----------|----------|----------|
 | x    | y         | #        | #        | #        |
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, results='hide'}
+  #import data (change this to wherever your OU x IM dataset is located)
+    df_factview <- read_tsv("~/ICPI/Data/ICPI_FactView_OU_IM_20171115_v1_1.txt") 
+```
 
-df_factview <-
-  
-  #import data
-    read_tsv("~/ICPI/Data/ICPI_FactView_OU_IM_20170922_v2_1.txt") %>% #change this to wherever your OU x IM dataset is located.
-  
+```{r, warning=FALSE}
+df_factview <- df_factview %>% 
   #rename all columns to lower case [persnal preference]
     rename_all(tolower) %>% 
   
@@ -71,6 +69,7 @@ Now that the data is cleaned up a bit, let's reshape it.
 | x    | y         | fy2017q1 | #     |
 | x    | y         | fy2017q2 | #     |
 | x    | y         | fy2017q3 | #     |
+| x    | y         | fy2017q4 | #     |
 
 ```{r}
  
