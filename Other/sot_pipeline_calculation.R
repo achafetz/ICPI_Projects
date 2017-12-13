@@ -11,8 +11,10 @@
 
 #load packages
   pacman::p_load(tidyverse, janitor, readxl)
+#set wd
+  setwd("C:/Users/achafetz/Downloads/")
 #PBAC file location  
-  pbac <- "C:/Users/achafetz/Downloads/Malawi COP17 PBAC version trying to get pipeline by budget code.xlsx"
+  pbac <- "Malawi COP17 PBAC version trying to get pipeline by budget code.xlsx"
 
 ## DATA MUNGING -----------------------------------------------------------------------------------------------
 
@@ -140,7 +142,7 @@
     
 ## EXPORT -----------------------------------------------------------------------------------------------------------
     
-  write_csv(im_budget, "C:/Users/achafetz/Downloads/imxfcn_pipeline.csv")
+  write_csv(im_budget, "imxfcn_pipeline.csv")
 
   rm(codes)
 
