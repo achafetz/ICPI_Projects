@@ -31,7 +31,7 @@ pacman::p_load(tidyverse)
       facet_grid(indicator ~ ., scales = "free_y") +
       scale_y_continuous(labels = scales::comma) + 
       scale_x_discrete(labels = c("FY15Q3", "Q4", "FY16Q1","Q2", "Q3", "Q4","FY17YQ1", "Q2", "Q3", "Q4")) + 
-      labs(title = "PEPFAR Reported Testing in Malawi", x = "", y = "", caption = "Source: ICPI Fact View FY17Q4v1.1")
+      labs(title = "PEPFAR Reported Testing in Malawi", x = "", y = "")
     
   #HTS_POS
   p2 <- df_mwi %>%
@@ -54,7 +54,7 @@ pacman::p_load(tidyverse)
       geom_point(mapping = aes(x = pd, y = values)) +
       scale_y_continuous(labels = scales::percent) + 
       scale_x_discrete(labels = c("FY15Q3", "Q4", "FY16Q1","Q2", "Q3", "Q4","FY17YQ1", "Q2", "Q3", "Q4")) + 
-      labs(title = "PEPFAR Testing Positivity in Malawi", x = "Period", y = "Positivity (HTS_POS/HTS_TST)", caption = "Source: ICPI Fact View FY17Q4v1.1")
+      labs(title = "PEPFAR Testing Positivity in Malawi", x = "", y = "Positivity (HTS_POS/HTS_TST)", caption = "Source: ICPI Fact View FY17Q4v1.1")
 
   multiplot(p1, p3, cols=2)
   
