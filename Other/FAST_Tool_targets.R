@@ -5,6 +5,7 @@
 
 ## DEPENDENCIES
   # ICPI Fact View PSNUxIM w/FY18 Targets
+  # COP MATRIX REPORT from FACTSInfo
 
 library(tidyverse)
 
@@ -38,8 +39,6 @@ library(tidyverse)
 ## EXPORT DATA ----------------------------------------------------------------------------------------------------------------
   
   write_csv(df_targets, "~/GitHub/DataPack/TempOutput/PEPFAR_FAST_Targets_2017.12.22.csv", na="")
-
-
 
 
 
