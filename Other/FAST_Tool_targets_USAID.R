@@ -5,14 +5,15 @@
 ##   Updated: 1/24/18
 
 ## DEPENDENCIES
-  # ICPI Fact View PSNUxIM w/FY18 Targets
+  # ICPI Fact View PSNUxIM
   # COP MATRIX REPORT from FACTSInfo
 
 library(tidyverse)
 
 ## IMPORT --------------------------------------------------------------------------------------------------------------------------
-  
-  df_targets <- read_tsv("~/ICPI/Data/ICPI_FactView_PSNU_IM_20171115_v1_2.txt", 
+
+#import
+  df_targets <- read_tsv("~/ICPI/Data/ICPI_FactView_PSNU_IM_20171222_v2_1.txt", 
                      col_types = cols(FY2016_TARGETS = "d",
                                       FY2017_TARGETS = "d",
                                       FY2018_TARGETS = "d")) %>% 
@@ -21,7 +22,9 @@ library(tidyverse)
 
 ## CLEAN/SUBSET DATA ----------------------------------------------------------------------------------------------------------------
 
-#fix issues with different mech & partner names(function at bottom of script)
+#fix issues with different mech & partner names(function at bottom of script, run function first)
+  #requires FACTSInfo output - https://gist.github.com/achafetz/2657385467425a3aa1433716edfd322a
+  #if you don't have the COP Matrix, you can skip this line of code
   df_targets <-cleanup_mechs(df_targets, "~/GitHub/DataPack/RawData/")
 
 #subset
@@ -40,8 +43,9 @@ library(tidyverse)
     mutate_at(vars(fy2016_targets, fy2017_targets, fy2018_targets), funs(ifelse(.==0, NA, .)))
 
 ## EXPORT DATA ----------------------------------------------------------------------------------------------------------------
+  date <-  format(Sys.Date(), format="%d%b%Y")
   
-  write_csv(df_targets, "~/GitHub/DataPack/TempOutput/PEPFAR_FAST_Targets_2017.12.22.csv", na="")
+  write_csv(df_targets, paste0("~/GitHub/DataPack/TempOutput/PEPFAR_FAST_Targets_",date,".csv"), na="")
 
 
 
