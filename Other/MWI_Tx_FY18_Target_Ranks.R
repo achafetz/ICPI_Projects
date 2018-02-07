@@ -41,4 +41,34 @@ df_rank <- df_mwi %>%
 #export
   write_csv(df_rank, "~/tmp/MWI_site_ranks.csv", na = "")
   
- 
+
+#graph
+  
+ggplot(df_rank, aes(tx_curr_fy18_targets)) +
+  geom_histogram() +
+  scale_x_continuous(labels = scales::comma)
+
+ggplot(df_rank, aes(tx_new_fy18_targets)) +
+  geom_histogram() +
+  scale_x_continuous(labels = scales::comma)  
+  
+df_rank %>% 
+  filter(tx_new_rank <=15) %>% 
+  ggplot(.) +
+    geom_col(aes(reorder(facility, tx_new_fy18_targets), tx_new_fy18_targets, fill = fundingagency)) +
+    coord_flip() + 
+    scale_y_continuous(labels = scales::comma)  +
+    facet_grid(psnu ~ ., scales = "free", space = "free") +
+    labs(title ="Top 15 Facilities", x = "", y = "TX_NEW, FY18 Target") +
+    scale_fill_discrete(name = "Agency") 
+
+df_rank %>% 
+  filter(tx_curr_rank <=15) %>% 
+  ggplot(.) +
+  geom_col(aes(reorder(facility, tx_curr_fy18_targets), tx_curr_fy18_targets, fill = fundingagency)) +
+  coord_flip() + 
+  scale_y_continuous(labels = scales::comma)  +
+  facet_grid(psnu ~ ., scales = "free", space = "free") +
+  labs(title ="Top 15 Facilities", x = "", y = "TX_CURR, FY18 Target") +
+  scale_fill_discrete(name = "Agency") 
+
