@@ -1,0 +1,68 @@
+---
+title: "FactView Filtering"
+author: "ahc"
+date: "`r format(Sys.Date())`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Working with Fact View datasets
+The ICPI Fact View datasets can make working with data from DATIM extremely easily as they provide a standardize layout and come out at regular intervals throughout the year. The issue is that the files can be too large to even open in Excel. One solution is to open the files up in a stats package, subset the data into a smaller dataset and then export it so you can work with it in Excel. The steps below will help you subset the dataset in R.
+
+## Setting up R/RStudio
+To kick things off, you will need to open R/RStudio and load up the package you will need to load the `readr` and `tidyverse` package. If you have never used these packages before, you will need to install them.
+
+```{r library}
+#if this is your first time using readr tidyverse, you will need to install it. remove the # and run this line
+  #install.packages("readr")  
+  #install.packages("tidyverse")
+#load the package
+  library(readr)
+  library(tidyverse)
+```
+
+## Importing the dataset
+The other key step is download the dataset. You will need to download one of the Fact View files the ICPI Data Store on PEPFAR Sharepoint. Once you download the file, you will want to make note of the location in which you stored the file.
+
+```{r filepath}
+#after the assignment sign, add the file path where your Fact View is stored, make sure to use / not \
+  filepath <- "~/ICPI/Data/ICPI_FactView_OU_IM_20180215_v1_3.txt"
+```
+
+To import the data into RStudio, we are going to use the `readr::read_tsv()` command. Since the Fact View files are saved in a txt file with tab delimiters, we need to tell R we are reading in a tab separated values (tsv) file. We have also added an extra option into the import function, `guess_max`. One issue that can occur is R will only read down a given set of rows to determine if the column type (string, numeric, etc). Waht can happen is the beginning rows may be blank and numeric later on and R would interpret this as a string column if it didn't go down far enough to check so we force R to do this in the command.  
+
+```{r import}
+#you can find additional information by looking at the Help file
+  ?readr::read_tsv
+
+#import (filepath is defined above)
+  df <- read_tsv(filepath, guess_max = 500000)
+```
+
+
+## Inspect Dataset
+
+Now that you have the dataset in R, you can start manipulating it to limit the file size. I would suggest first renaming all the variables to lower case and the mechanismid to a string/character variable and then looking at the dataset.
+
+```{r inspect}
+#rename to lower for ease of use
+  df <- rename_all(df, tolower)
+
+#change mechid to character for ease of use (if using PSNUxIM or OUxIM)
+  if("mechanismid" %in% names(df)) df <- mutate(df, mechanismid = as.character(mechanismid))
+
+#inspect variables
+  glimpse(df)
+```
+
+#Subsetting
+
+```{r extra}
+#save as Rds
+  newfile <- stringr::str_replace(file, "txt", "Rds")
+  if(save_rds == TRUE) saveRDS(df, file.path(path, newfile))
+
+```
