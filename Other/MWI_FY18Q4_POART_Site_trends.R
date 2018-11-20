@@ -165,56 +165,57 @@ district_completeness <- df_mwi %>%
 
 # NOTES -------------------------------------------------------------------
 
-notes_source <- "Data Source: DATIM Genie Site x IM (2018-11-20): Malawi, USAID [DATIM GLOBAL]"
-notes_1 <- "Site Trends tab"
-notes_psnus <- tibble::tribble(
-    ~`Indicators of Interest`,                                              ~Districts,
-  "HTS_TST (index testing)", "Blantyre, Chikwawa, Zomba, Mangochi, Machinga, Lilongwe",
-  "TST_POS (index testing)", "Blantyre, Chikwawa, Zomba, Mangochi, Machinga, Lilongwe",
-                  "HTS_TST",                                           "all districts",
-              "HTS_TST_POS", "Blantyre, Chikwawa, Zomba, Mangochi, Machinga, Lilongwe",
-                   "TX_NEW",                                           "all districts",
-                  "TX_CURR",                                           "all districts",
-                   "TB_ART",                                           "all districts"
-  )
-notes_2 <- "District Age Trends"
-notes_3 <- "Only select districts: Blantyre, Chikwawa, Zomba, Mangochi, Machinga, Lilongwe"
-notes_4 <- "Unknown Age excluded"
-notes_5 <- "* some sites in Lilongwe may not have age/sex disaggregated data."
-notes_6 <- "Site & District Disagg Completeness"
-notes_7 <- "Completessness indicators the (Modality/)Age/Sex disaggregate's completeness compared to the total numerator. The Site disagg completessness tab is for HTS_TST and HTS_TST_POS index and the District disagg completeness is for age/sex completeness."
-notes_8 <- "Code: "
+  notes_source <- "Data Source: DATIM Genie Site x IM (2018-11-20): Malawi, USAID [DATIM GLOBAL]"
+  notes_1 <- "Site Trends tab"
+  notes_psnus <- tibble::tribble(
+      ~`Indicators of Interest`,                                              ~Districts,
+    "HTS_TST (index testing)", "Blantyre, Chikwawa, Zomba, Mangochi, Machinga, Lilongwe",
+    "TST_POS (index testing)", "Blantyre, Chikwawa, Zomba, Mangochi, Machinga, Lilongwe",
+                    "HTS_TST",                                           "all districts",
+                "HTS_TST_POS", "Blantyre, Chikwawa, Zomba, Mangochi, Machinga, Lilongwe",
+                     "TX_NEW",                                           "all districts",
+                    "TX_CURR",                                           "all districts",
+                     "TB_ART",                                           "all districts"
+    )
+  notes_2 <- "District Age Trends"
+  notes_3 <- "Only select districts: Blantyre, Chikwawa, Zomba, Mangochi, Machinga, Lilongwe"
+  notes_4 <- "Unknown Age excluded"
+  notes_5 <- "* some sites in Lilongwe may not have age/sex disaggregated data."
+  notes_6 <- "Site & District Disagg Completeness"
+  notes_7 <- "Completessness indicators the (Modality/)Age/Sex disaggregate's completeness compared to the total numerator. The Site disagg completessness tab is for HTS_TST and HTS_TST_POS index and the District disagg completeness is for age/sex completeness."
+  notes_8 <- "Code: https://github.com/achafetz/ICPI_Projects/blob/master/Other/MWI_FY18Q4_POART_Site_trends.R"
 
 # EXPORT ------------------------------------------------------------------
 
-wb <- createWorkbook()
-addWorksheet(wb, "Site Trends")
-writeData(wb, "Site Trends", df_site)
+  wb <- createWorkbook()
+  addWorksheet(wb, "Site Trends")
+  writeData(wb, "Site Trends", df_site)
 
-addWorksheet(wb, "District Age Trends")
-writeData(wb, "District Age Trends", df_district)
+  addWorksheet(wb, "District Age Trends")
+  writeData(wb, "District Age Trends", df_district)
 
-addWorksheet(wb, "Site Disagg Completeness")
-writeData(wb, "Site Disagg Completeness", site_completeness)
+  addWorksheet(wb, "Site Disagg Completeness")
+  writeData(wb, "Site Disagg Completeness", site_completeness)
 
-addWorksheet(wb, "District Disagg Completeness")
-writeData(wb, "District Disagg Completeness", district_completeness)
+  addWorksheet(wb, "District Disagg Completeness")
+  writeData(wb, "District Disagg Completeness", district_completeness)
 
-addWorksheet(wb, "Notes")
-writeData(wb, "Notes", notes_source, startRow = 1)
-writeData(wb, "Notes", notes_1, startRow = 3)
-writeData(wb, "Notes", notes_psnus, startRow = 4)
-writeData(wb, "Notes", notes_2, startRow = 13)
-writeData(wb, "Notes", notes_3, startRow = 14)
-writeData(wb, "Notes", notes_4, startRow = 15)
-writeData(wb, "Notes", notes_5, startRow = 16)
-writeData(wb, "Notes", notes_6, startRow = 18)
-writeData(wb, "Notes", notes_7, startRow = 19)
+  addWorksheet(wb, "Notes")
+  writeData(wb, "Notes", notes_source, startRow = 1)
+  writeData(wb, "Notes", notes_1, startRow = 3)
+  writeData(wb, "Notes", notes_psnus, startRow = 4)
+  writeData(wb, "Notes", notes_2, startRow = 13)
+  writeData(wb, "Notes", notes_3, startRow = 14)
+  writeData(wb, "Notes", notes_4, startRow = 15)
+  writeData(wb, "Notes", notes_5, startRow = 16)
+  writeData(wb, "Notes", notes_6, startRow = 18)
+  writeData(wb, "Notes", notes_7, startRow = 19)
+  writeData(wb, "Notes", notes_8, startRow = 21)
 
 
 
-(tmp <- dir_create(file_temp()))
-saveWorkbook(wb, file = path(tmp, "MWI_FY18Q4_Trends.xlsx"), overwrite = TRUE)
+  (tmp <- dir_create(file_temp()))
+  saveWorkbook(wb, file = path(tmp, "MWI_FY18Q4_Trends.xlsx"), overwrite = TRUE)
 
 
 
