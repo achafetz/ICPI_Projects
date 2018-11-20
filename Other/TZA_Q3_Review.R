@@ -255,7 +255,8 @@
 #USAID VMMC age breakdown
   df_tza %>%
     filter(indicator == "VMMC_CIRC",
-           standardizeddisaggregate =="Age/Sex") %>%
+           standardizeddisaggregate =="Age/Sex",
+           fundingagency == "USAID") %>%
     group_by(agefine) %>%
     summarise_at(vars(fy2018cum, fy2018_targets), ~ sum(., na.rm = TRUE)) %>%
     ungroup() %>%
