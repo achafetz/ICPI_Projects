@@ -61,7 +61,7 @@ df_netnew %>%
        caption = "Source: FY18Q4c MSD") +
   plot_theme()
 
-ggsave("~/COP19/Malawi/USAID_CommTestingonly_Trend.png", dpi = 300, width = 8, height = 5, units = "in")
+ggsave("~/COP19/Malawi/MWI_net_new_Trend.png", dpi = 300, width = 8, height = 5, units = "in")
 
 
 
