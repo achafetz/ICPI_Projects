@@ -93,7 +93,8 @@
            pd = quarter(month, with_year = TRUE, fiscal_start = 10) %>% as.character()) %>% 
     group_by(partner, indicator) %>% 
     mutate(max = max(val) + ifelse(max(val) < .15, .05, .15)) %>% #used to keep labels within bounds
-    ungroup() 
+    ungroup() %>% 
+    mutate(val = ifelse(val == 0, NA, val))
 
 
 plot_cascade <- function(prime, filepath_save = NULL){
@@ -201,5 +202,4 @@ partners <- c("Jhpiego-Sauti", "Deloitte", "EGPAF", "Baylor", "JSI-AIDSFree", #U
 map(.x = partners, 
     .f = ~ plot_cascade(.x, "../Downloads"))
 
-plot_cascade(partners[1], "../Downloads")
 
